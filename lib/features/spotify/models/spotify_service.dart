@@ -10,7 +10,7 @@ final spotify = api.SpotifyApi(credentials);
 
 class SpotifyService {
 
-  static Future<Iterable<api.PlaylistSimple>?> fetchPlaylist(String categoryId) async {
+  static Future<Iterable<api.PlaylistSimple>?> fetchPlaylists(String categoryId) async {
     try {
       var usersPlaylists = await spotify.playlists
           .getByCategoryId(categoryId, country: "SE")

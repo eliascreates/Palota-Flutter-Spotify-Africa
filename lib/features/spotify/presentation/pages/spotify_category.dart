@@ -4,6 +4,9 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/models/spotif
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'package:spotify/spotify.dart' as api;
 
+import 'components/category_header.dart';
+import 'components/playlist_card.dart';
+
 // TODO: fetch and populate playlist info and allow for click-through to detail
 // Feel free to change this to a stateful widget if necessary
 
@@ -25,7 +28,7 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
   @override
   void initState() {
     super.initState();
-    userPlaylist = SpotifyService.fetchPlaylist(widget.categoryId);
+    userPlaylist = SpotifyService.fetchPlaylists(widget.categoryId);
   }
 
   @override
@@ -56,44 +59,66 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: FutureBuilder(
-            future: userPlaylist,
-            builder: (context, snapshot) {
-              debugPrint("the snapshot $snapshot");
-              if (snapshot.hasData) {
-                return GridView.builder(
-                  itemCount: snapshot.data!.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Text(snapshot.data!.elementAt(index).name!),
-                        SizedBox(
-                          width: 100,
-                          child: Image.network(
-                              fit: BoxFit.cover,
-                              snapshot.data!
-                                  .elementAt(index)
-                                  .images!
-                                  .first
-                                  .url!),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.hasError}');
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
-        ),
+      body: FutureBuilder(
+        future: userPlaylist,
+        builder: (context, snapshot) {
+          debugPrint("the snapshot $snapshot");
+          if (snapshot.hasData) {
+            return CustomScrollView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      CategoryHeader(
+                        imageUrl: snapshot.data!.last.images!.first.url!,
+                        categoryId: widget.categoryId,
+                        categoryType: snapshot.data!.first.type!,
+                      ),
+                    ],
+                  ),
+                ),
+                SliverPadding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                  sliver: SliverGrid.builder(
+                    itemCount: snapshot.data!.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 163 / 212,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                    ),
+                    itemBuilder: (context, index) => PlaylistCard(
+                      onPress: () {},
+                      imageUrl:
+                          snapshot.data!.elementAt(index).images!.first.url!,
+                      playlistName: snapshot.data!.elementAt(index).name!,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            
+            return Text('${snapshot.hasError}');
+          }
+          return const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: CircularProgressIndicator()),
+            ],
+          );
+        },
       ),
     );
   }
+
+  // void _navigateToSpotifyPlaylistPage(BuildContext context) {
+  //   Navigator.of(context).pushNamed(AppRoutes.spotifyPlaylist,
+  //       arguments: LandingPage._spotifyCategoryId);
+  // }
 }
