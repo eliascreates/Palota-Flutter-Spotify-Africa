@@ -93,7 +93,8 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                       crossAxisSpacing: 16,
                     ),
                     itemBuilder: (context, index) => PlaylistCard(
-                      onPress: () {},
+                      onPress: () => _navigateToSpotifyPlaylistPage(
+                          context, snapshot.data!.elementAt(index).id!),
                       imageUrl:
                           snapshot.data!.elementAt(index).images!.first.url!,
                       playlistName: snapshot.data!.elementAt(index).name!,
@@ -103,9 +104,10 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
               ],
             );
           } else if (snapshot.hasError) {
-            
             return Text('${snapshot.hasError}');
           }
+
+          //Loading Widget
           return const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -117,8 +119,9 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
     );
   }
 
-  // void _navigateToSpotifyPlaylistPage(BuildContext context) {
-  //   Navigator.of(context).pushNamed(AppRoutes.spotifyPlaylist,
-  //       arguments: LandingPage._spotifyCategoryId);
-  // }
+  void _navigateToSpotifyPlaylistPage(
+      BuildContext context, String spotifyPlaylistId) {
+    Navigator.of(context)
+        .pushNamed(AppRoutes.spotifyPlaylist, arguments: spotifyPlaylistId);
+  }
 }

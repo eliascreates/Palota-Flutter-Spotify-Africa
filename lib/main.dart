@@ -13,8 +13,10 @@ class PalotaAssessmentApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Palota Spotify Africa Assessment',
       theme: ThemeData.dark(useMaterial3: true).copyWith(
+        scaffoldBackgroundColor: const Color(0xFF141218),
         textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)
             .apply(bodyColor: Colors.white, displayColor: Colors.white),
       ),
