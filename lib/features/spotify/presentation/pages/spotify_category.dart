@@ -4,8 +4,8 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/models/spotif
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'package:spotify/spotify.dart' as api;
 
-import 'components/category_header.dart';
-import 'components/playlist_card.dart';
+import '../components/category_header.dart';
+import '../components/playlist_card.dart';
 
 // TODO: fetch and populate playlist info and allow for click-through to detail
 // Feel free to change this to a stateful widget if necessary
