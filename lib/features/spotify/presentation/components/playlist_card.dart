@@ -10,20 +10,36 @@ class PlaylistCard extends StatelessWidget {
     required this.onPress,
     required this.imageUrl,
     required this.playlistName,
+
+    //Default sizes for category playlist
+    this.imageSize = 155,
+    this.imageRadius = 8,
+    this.containerRadius = 12,
+    this.containerPadding = 4,
+    this.fontSize = 12,
+    this.fontWeight = FontWeight.w500,
+    this.textPadding = 4,
   });
 
   final VoidCallback onPress;
+
+  final double imageSize;
+  final double imageRadius;
+  final FontWeight fontWeight;
+  final double containerRadius;
+  final double containerPadding;
+  final double fontSize;
+  final double textPadding;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        height: 300,
-        padding: const EdgeInsets.all(4),
+        padding: EdgeInsets.all(containerPadding),
         decoration: BoxDecoration(
           color: const Color(0xFF211F26),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(containerRadius),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,11 +52,11 @@ class PlaylistCard extends StatelessWidget {
                     offset: const Offset(0, 4))
               ]),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(imageRadius),
                 child: Image.network(
                   imageUrl,
-                  height: 155,
-                  width: 155,
+                  height: imageSize,
+                  width: imageSize,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -53,8 +69,8 @@ class PlaylistCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.roboto(
                   letterSpacing: 0.5,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontSize: fontSize,
+                  fontWeight: fontWeight,
                 ),
               ),
             ),
