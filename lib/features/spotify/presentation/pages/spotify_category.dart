@@ -23,12 +23,25 @@ class SpotifyCategory extends StatefulWidget {
 }
 
 class _SpotifyCategoryState extends State<SpotifyCategory> {
-  late Future<Iterable<api.PlaylistSimple>?> userPlaylist;
+  bool isLoading = true; // Load Playlist on start up
+  bool isLoadingMore = false; // Load more playlist - pagination
+  int pageNumber = 0; // shows 10 playlists per page
+
+  Set<api.PlaylistSimple> playlists = {};
+
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    userPlaylist = SpotifyService.fetchPlaylists(widget.categoryId);
+    _scrollController.addListener(_scrollRefreshListener);
+    fetchPlaylists(widget.categoryId, pageNumber: 0);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -59,12 +72,9 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
           ),
         ),
       ),
-      body: FutureBuilder(
-        future: userPlaylist,
-        builder: (context, snapshot) {
-          debugPrint("the snapshot $snapshot");
-          if (snapshot.hasData) {
-            return CustomScrollView(
+      body: !isLoading //Shows loading widget if playlists still being fetched
+          ? CustomScrollView(
+              controller: _scrollController,
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
@@ -73,9 +83,9 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                   delegate: SliverChildListDelegate(
                     [
                       CategoryHeader(
-                        imageUrl: snapshot.data!.last.images!.first.url!,
+                        imageUrl: playlists.last.images!.first.url!,
                         categoryId: widget.categoryId,
-                        categoryType: snapshot.data!.first.type!,
+                        categoryType: playlists.first.type!,
                       ),
                     ],
                   ),
@@ -84,7 +94,8 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                   sliver: SliverGrid.builder(
-                    itemCount: snapshot.data!.length,
+                    itemCount:
+                        isLoadingMore ? playlists.length + 1 : playlists.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 163 / 212,
@@ -92,31 +103,70 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                       mainAxisSpacing: 16,
                       crossAxisSpacing: 16,
                     ),
-                    itemBuilder: (context, index) => PlaylistCard(
-                      onPress: () => _navigateToSpotifyPlaylistPage(
-                          context, snapshot.data!.elementAt(index).id!),
-                      imageUrl:
-                          snapshot.data!.elementAt(index).images!.first.url!,
-                      playlistName: snapshot.data!.elementAt(index).name!,
-                    ),
+                    itemBuilder: (context, index) {
+                      if (index < playlists.length) {
+                        return PlaylistCard(
+                          onPress: () => _navigateToSpotifyPlaylistPage(
+                              context, playlists.elementAt(index).id!),
+                          imageUrl:
+                              playlists.elementAt(index).images!.first.url!,
+                          playlistName: playlists.elementAt(index).name!,
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
                   ),
                 ),
               ],
-            );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.hasError}');
-          }
-
-          //Loading Widget
-          return const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(child: CircularProgressIndicator()),
-            ],
-          );
-        },
-      ),
+            )
+          : const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(child: CircularProgressIndicator()),
+              ],
+            ),
     );
+  }
+
+  void _scrollRefreshListener() async {
+    // Makes sure a call is complete before another is made
+    if (isLoadingMore) {
+      return;
+    }
+
+    //Loads more playlists when user scrolls to max scroll extent
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      setState(() {
+        isLoadingMore = true;
+      });
+
+      pageNumber++;
+      await fetchPlaylists(widget.categoryId, pageNumber: pageNumber);
+
+      setState(() {
+        isLoadingMore = false;
+      });
+    }
+  }
+
+  Future<void> fetchPlaylists(String categoryId, {int pageNumber = 0}) async {
+    int limit = 10;
+    try {
+      var userPlaylists = await spotify.playlists
+          .getByCategoryId(categoryId, country: "SE")
+          .getPage(limit, pageNumber * limit);
+
+      setState(() {
+        playlists.addAll(userPlaylists.items!.toSet());
+        isLoading = false;
+      });
+    } catch (error) {
+      debugPrint(error.toString());
+    }
   }
 
   void _navigateToSpotifyPlaylistPage(
