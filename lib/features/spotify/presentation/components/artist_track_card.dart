@@ -12,7 +12,7 @@ class ArtistTrackCard extends StatelessWidget {
   final String imageUrl;
   final String artistName;
   final String songName;
-  final String duration;
+  final Duration duration;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ArtistTrackCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 240,
+                width: 200,
                 child: Text(
                   songName,
                   overflow: TextOverflow.ellipsis,
@@ -57,7 +57,7 @@ class ArtistTrackCard extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              duration,
+              formatDuration(duration),
               textAlign: TextAlign.right,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   fontSize: 10,
@@ -68,5 +68,18 @@ class ArtistTrackCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String formatDuration(Duration duration) {
+    //Some songs like LoFi music can be over 60 minutes long
+    String hours = duration.inHours.toString().padLeft(2, '0');
+    String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
+    String seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+
+    if (duration.inMinutes > 60) {
+      return "$hours:$minutes:$seconds";
+    }
+
+    return "$minutes:$seconds";
   }
 }

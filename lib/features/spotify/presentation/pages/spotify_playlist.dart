@@ -7,6 +7,7 @@ import '../../services/spotify_service.dart';
 import '../components/artist_card.dart';
 import '../components/artist_track_card.dart';
 import '../components/playlist_followers.dart';
+import '../components/show_error_message.dart';
 
 //TODO: complete this page - you may choose to change it to a stateful widget if necessary
 class SpotifyPlaylist extends StatefulWidget {
@@ -67,8 +68,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                         PlaylistDescription(text: _playlistInfo!.description!),
                         const SizedBox(height: 4),
                         PlaylistFollowers(
-                            numFollowers:
-                                _playlistInfo!.followers!.total),
+                            numFollowers: _playlistInfo!.followers!.total),
                         const SizedBox(height: 16),
 
                         //Coloured Divider
@@ -118,11 +118,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                             .images!
                             .first
                             .url!,
-                        duration: playlistTracks!
-                            .elementAt(index)
-                            .duration!
-                            .inMinutes
-                            .toString(),
+                        duration: playlistTracks!.elementAt(index).duration!,
                       );
                     },
                   )
@@ -170,7 +166,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                   ),
               ],
             )
-          : const Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator(color: AppColors.cyan)),
     );
   }
 
@@ -194,19 +190,6 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   }
 }
 
-class ShowErrorMessage extends StatelessWidget {
-  const ShowErrorMessage({super.key, required this.message});
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Center(
-        child: Text(message),
-      ),
-    );
-  }
-}
 
 
 class PlaylistDescription extends StatelessWidget {

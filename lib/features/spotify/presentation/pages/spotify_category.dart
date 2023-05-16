@@ -96,9 +96,7 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 32),
                     sliver: SliverGrid.builder(
-                      itemCount: isLoadingMore
-                          ? playlists!.length + 1
-                          : playlists!.length,
+                      itemCount: playlists!.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 163 / 212,
@@ -107,28 +105,28 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                         crossAxisSpacing: 16,
                       ),
                       itemBuilder: (context, index) {
-                        if (index < playlists!.length) {
-                          return PlaylistCard(
-                            onPress: () => _navigateToSpotifyPlaylistPage(
-                                context, playlists!.elementAt(index).id!),
-                            imageUrl:
-                                playlists!.elementAt(index).images!.first.url!,
-                            playlistName: playlists!.elementAt(index).name!,
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                        return PlaylistCard(
+                          onPress: () => _navigateToSpotifyPlaylistPage(
+                              context, playlists!.elementAt(index).id!),
+                          imageUrl:
+                              playlists!.elementAt(index).images!.first.url!,
+                          playlistName: playlists!.elementAt(index).name!,
+                        );
                       },
                     ),
                   ),
+                if (isLoadingMore)
+                  const SliverToBoxAdapter(
+                    child: Center(
+                      child: CircularProgressIndicator(color: AppColors.cyan),
+                    ),
+                  )
               ],
             )
           : const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(child: CircularProgressIndicator()),
+                Center(child: CircularProgressIndicator(color: AppColors.cyan)),
               ],
             ),
     );
