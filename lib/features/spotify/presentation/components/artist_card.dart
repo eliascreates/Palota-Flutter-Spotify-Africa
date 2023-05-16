@@ -62,6 +62,7 @@ class ArtistCard extends StatelessWidget {
               imageUrl,
               height: 120,
               width: 120,
+              fit: BoxFit.cover,
             ),
           ),
           const SizedBox(height: 8),

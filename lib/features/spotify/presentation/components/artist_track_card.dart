@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ArtistTrackCard extends StatelessWidget {
   const ArtistTrackCard({
     super.key,
@@ -34,12 +33,18 @@ class ArtistTrackCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                songName,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontSize: 12,
-                    letterSpacing: 0.5,
-                    fontWeight: FontWeight.w500),
+              SizedBox(
+                width: 240,
+                child: Text(
+                  songName,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  maxLines: 1,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontSize: 12,
+                      letterSpacing: 0.5,
+                      fontWeight: FontWeight.w500),
+                ),
               ),
               Text(
                 artistName,
