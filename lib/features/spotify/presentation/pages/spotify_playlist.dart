@@ -6,6 +6,7 @@ import 'package:spotify/spotify.dart' as api;
 import '../../services/spotify_service.dart';
 import '../components/artist_card.dart';
 import '../components/artist_track_card.dart';
+import '../components/playlist_followers.dart';
 
 //TODO: complete this page - you may choose to change it to a stateful widget if necessary
 class SpotifyPlaylist extends StatefulWidget {
@@ -67,7 +68,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                         const SizedBox(height: 4),
                         PlaylistFollowers(
                             numFollowers:
-                                _playlistInfo!.followers!.total.toString()),
+                                _playlistInfo!.followers!.total),
                         const SizedBox(height: 16),
 
                         //Coloured Divider
@@ -207,41 +208,6 @@ class ShowErrorMessage extends StatelessWidget {
   }
 }
 
-class PlaylistFollowers extends StatelessWidget {
-  const PlaylistFollowers({
-    super.key,
-    required this.numFollowers,
-  });
-
-  final String numFollowers;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          width: 195,
-          padding: const EdgeInsets.symmetric(vertical: 8).copyWith(right: 16),
-          decoration: const BoxDecoration(
-            color: Color(0xFF211F26),
-            borderRadius:
-                BorderRadiusDirectional.horizontal(start: Radius.circular(12)),
-          ),
-          child: Text(
-            "$numFollowers Followers",
-            textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.5,
-                  fontSize: 11,
-                ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class PlaylistDescription extends StatelessWidget {
   const PlaylistDescription({super.key, required this.text});
