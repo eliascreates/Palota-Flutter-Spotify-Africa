@@ -9,7 +9,7 @@ final credentials = api.SpotifyApiCredentials(
 final spotify = api.SpotifyApi(credentials);
 
 class SpotifyService {
-    static Future<Set<api.PlaylistSimple>?> fetchPlaylists(String categoryId,
+  static Future<Set<api.PlaylistSimple>?> fetchPlaylists(String categoryId,
       {int pageNumber = 0}) async {
     int limit = 10;
     try {
@@ -78,6 +78,4 @@ class SpotifyService {
     }
     return null;
   }
-
-
 }

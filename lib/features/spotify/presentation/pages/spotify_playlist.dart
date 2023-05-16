@@ -150,10 +150,12 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                         itemBuilder: (context, index) {
                           return ArtistCard(
                               imageUrl: _featuredArtists!
-                                  .elementAt(index)
-                                  .images!
-                                  .first
-                                  .url!,
+                                      .elementAt(index)
+                                      .images
+                                      // ignore: sdk_version_since
+                                      ?.elementAtOrNull(0)
+                                      ?.url ?? // When artist image is null display default image
+                                  "https://i.pinimg.com/236x/63/c0/54/63c054fe3af6cc5e37bba5655a32a6a0.jpg",
                               artistName:
                                   _featuredArtists!.elementAt(index).name!);
                         },
@@ -166,7 +168,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                   ),
               ],
             )
-          : const Center(child: CircularProgressIndicator(color: AppColors.cyan)),
+          : const Center(
+              child: CircularProgressIndicator(color: AppColors.cyan)),
     );
   }
 
@@ -189,8 +192,6 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
     });
   }
 }
-
-
 
 class PlaylistDescription extends StatelessWidget {
   const PlaylistDescription({super.key, required this.text});
