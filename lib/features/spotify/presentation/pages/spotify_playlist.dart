@@ -3,7 +3,7 @@ import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/playlist_card.dart';
 import 'package:spotify/spotify.dart' as api;
 
-import '../../models/spotify_service.dart';
+import '../../services/spotify_service.dart';
 import '../components/artist_card.dart';
 import '../components/artist_track_card.dart';
 
@@ -20,16 +20,15 @@ class SpotifyPlaylist extends StatefulWidget {
 class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   bool _isLoading = true;
 
-  api.Playlist _playlistInfo = api.Playlist();
-  Set<api.Track> playlistTracks = {};
-  Set<api.Artist> _featuredArtists = {};
+  api.Playlist? _playlistInfo = api.Playlist();
+  Set<api.Track>? playlistTracks = {};
+  Set<api.Artist>? _featuredArtists = {};
 
   @override
   void initState() {
     super.initState();
-    fetchPlaylistTracks(widget.playlistId);
-    fetchPlaylistInfo(widget.playlistId);
-    fetchFeaturedArtists(widget.playlistId);
+
+    loadData(widget.playlistId);
   }
 
   @override
@@ -44,79 +43,92 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               slivers: [
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 48.0)
-                            .copyWith(bottom: 15),
-                        child: PlaylistCard(
-                            fontSize: 22,
-                            imageRadius: 12,
-                            fontWeight: FontWeight.w400,
-                            textPadding: 15,
-                            containerRadius: 24,
-                            containerPadding: 15,
-                            imageSize: 263,
-                            onPress: () {},
-                            imageUrl: _playlistInfo.images!.first.url!,
-                            playlistName: _playlistInfo.name!),
-                      ),
+                if (_playlistInfo != null) //In case no data for playlistInfo
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 48.0)
+                              .copyWith(bottom: 15),
+                          child: PlaylistCard(
+                              fontSize: 22,
+                              imageRadius: 12,
+                              fontWeight: FontWeight.w400,
+                              textPadding: 15,
+                              containerRadius: 24,
+                              containerPadding: 15,
+                              imageSize: 263,
+                              onPress: () {},
+                              imageUrl: _playlistInfo!.images!.first.url!,
+                              playlistName: _playlistInfo!.name!),
+                        ),
 
-                      PlaylistDescription(text: _playlistInfo.description!),
-                      const SizedBox(height: 4),
-                      PlaylistFollowers(
-                          numFollowers:
-                              _playlistInfo.followers!.total.toString()),
-                      const SizedBox(height: 16),
+                        PlaylistDescription(text: _playlistInfo!.description!),
+                        const SizedBox(height: 4),
+                        PlaylistFollowers(
+                            numFollowers:
+                                _playlistInfo!.followers!.total.toString()),
+                        const SizedBox(height: 16),
 
-                      //Coloured Divider
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          height: 4,
-                          width: 326,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            gradient: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: <Color>[
-                                AppColors.blue,
-                                AppColors.cyan,
-                                AppColors.green,
-                              ],
+                        //Coloured Divider
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: 4,
+                            width: 326,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: <Color>[
+                                  AppColors.blue,
+                                  AppColors.cyan,
+                                  AppColors.green,
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 32),
-                    ],
+                        const SizedBox(height: 32),
+                      ],
+                    ),
+                  )
+                else
+                  const ShowErrorMessage(
+                    message: "Couldn't Fetch Playlist Information",
                   ),
-                ),
 
                 //Tracklist
-                SliverList.builder(
-                  itemCount: 7, //playlistTracks.length,
-                  itemBuilder: (context, index) {
-                    return ArtistTrackCard(
-                      artistName:
-                          playlistTracks.elementAt(index).artists!.first.name!,
-                      songName: playlistTracks.elementAt(index).name!,
-                      imageUrl: playlistTracks
-                          .elementAt(index)
-                          .album!
-                          .images!
-                          .first
-                          .url!,
-                      duration: playlistTracks
-                          .elementAt(index)
-                          .duration!
-                          .inMinutes
-                          .toString(),
-                    );
-                  },
-                ),
+                if (playlistTracks != null)
+                  SliverList.builder(
+                    itemCount: playlistTracks!.length,
+                    itemBuilder: (context, index) {
+                      return ArtistTrackCard(
+                        artistName: playlistTracks!
+                            .elementAt(index)
+                            .artists!
+                            .first
+                            .name!,
+                        songName: playlistTracks!.elementAt(index).name!,
+                        imageUrl: playlistTracks!
+                            .elementAt(index)
+                            .album!
+                            .images!
+                            .first
+                            .url!,
+                        duration: playlistTracks!
+                            .elementAt(index)
+                            .duration!
+                            .inMinutes
+                            .toString(),
+                      );
+                    },
+                  )
+                else
+                  const ShowErrorMessage(
+                    message: "Couldn't Fetch Tracklist Information",
+                  ),
 
                 //Featured Artists
                 const SliverList(
@@ -128,96 +140,70 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                     ],
                   ),
                 ),
-
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 42),
-                    height: 143,
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _featuredArtists.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return ArtistCard(
-                            imageUrl: _featuredArtists
-                                .elementAt(index)
-                                .images!
-                                .first
-                                .url!,
-                            artistName:
-                                _featuredArtists.elementAt(index).name!);
-                      },
+                if (_featuredArtists != null)
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 42),
+                      height: 143,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _featuredArtists!.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ArtistCard(
+                              imageUrl: _featuredArtists!
+                                  .elementAt(index)
+                                  .images!
+                                  .first
+                                  .url!,
+                              artistName:
+                                  _featuredArtists!.elementAt(index).name!);
+                        },
+                      ),
                     ),
+                  )
+                else
+                  const ShowErrorMessage(
+                    message: "Couldn't Fetch Featured Artists Information",
                   ),
-                ),
               ],
             )
           : const Center(child: CircularProgressIndicator()),
     );
   }
 
-//Fetch Playlist Info
-  Future<void> fetchPlaylistInfo(
-    String playlistId,
-  ) async {
-    try {
-      var playlistInfo = await spotify.playlists.get(playlistId);
-      setState(() {
-        _playlistInfo = playlistInfo;
-      });
-    } catch (error) {
-      debugPrint(error.toString());
+  //Load Data Before Showing anything
+  Future<void> loadData(String playlistId) async {
+    _playlistInfo = await SpotifyService.fetchPlaylistInfo(playlistId);
+
+    playlistTracks = await SpotifyService.fetchPlaylistTracks(playlistId);
+
+    //if track information exists, get featured artists
+    if (playlistTracks != null) {
+      //Limiting to 10 for ease of presentation and to minimize api requests made
+      playlistTracks = playlistTracks!.take(10).toSet();
+      _featuredArtists =
+          await SpotifyService.fetchFeaturedArtists(playlistTracks!);
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
 
-  //Fetch playlist Tracklist
-  Future<void> fetchPlaylistTracks(
-    String playlistId,
-  ) async {
-    try {
-      var userPlaylistTracks =
-          await spotify.playlists.getTracksByPlaylistId(playlistId).all();
+class ShowErrorMessage extends StatelessWidget {
+  const ShowErrorMessage({super.key, required this.message});
+  final String message;
 
-      setState(() {
-        playlistTracks.addAll(userPlaylistTracks.toSet());
-      });
-    } catch (error) {
-      debugPrint(error.toString());
-    }
-  }
-
-//Featured Artists in playlist
-  Future<void> fetchFeaturedArtists(
-    String playlistId,
-  ) async {
-    try {
-      //Get tracks in playlist
-      var featuredTracks =
-          await spotify.playlists.getTracksByPlaylistId(playlistId).all();
-
-      featuredTracks = featuredTracks.take(10); // Limiting it to on
-
-      //This loop makes a unique list of artists in each and every track in a lists
-      for (var index = 0; index < featuredTracks.length; index++) {
-        if (featuredTracks.elementAt(index).artists!.isNotEmpty) {
-          _featuredArtists
-              .addAll(featuredTracks.elementAt(index).artists!.toSet());
-        }
-      }
-
-      //Showing only first 10 artists to minimize requests made
-      _featuredArtists = _featuredArtists.take(10).toSet();
-      var artists =
-          await spotify.artists.list(_featuredArtists.map((e) => e.id!));
-      _featuredArtists = artists.toSet();
-
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (error) {
-      debugPrint(error.toString());
-    }
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Center(
+        child: Text(message),
+      ),
+    );
   }
 }
 

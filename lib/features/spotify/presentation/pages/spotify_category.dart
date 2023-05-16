@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/colors.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/models/spotify_service.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/services/spotify_service.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'package:spotify/spotify.dart' as api;
 
@@ -27,7 +27,7 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
   bool isLoadingMore = false; // Load more playlist - pagination
   int pageNumber = 0; // shows 10 playlists per page
 
-  Set<api.PlaylistSimple> playlists = {};
+  Set<api.PlaylistSimple>? playlists = {};
 
   final _scrollController = ScrollController();
 
@@ -35,7 +35,7 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollRefreshListener);
-    fetchPlaylists(widget.categoryId, pageNumber: 0);
+    loadData(widget.categoryId, pageNumber: 0);
   }
 
   @override
@@ -79,47 +79,50 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               slivers: [
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      CategoryHeader(
-                        imageUrl: playlists.last.images!.first.url!,
-                        categoryId: widget.categoryId,
-                        categoryType: playlists.first.type!,
-                      ),
-                    ],
-                  ),
-                ),
-                SliverPadding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-                  sliver: SliverGrid.builder(
-                    itemCount:
-                        isLoadingMore ? playlists.length + 1 : playlists.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 163 / 212,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
+                if (playlists != null)
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        CategoryHeader(
+                          imageUrl: playlists!.last.images!.first.url!,
+                          categoryId: widget.categoryId,
+                          categoryType: playlists!.first.type!,
+                        ),
+                      ],
                     ),
-                    itemBuilder: (context, index) {
-                      if (index < playlists.length) {
-                        return PlaylistCard(
-                          onPress: () => _navigateToSpotifyPlaylistPage(
-                              context, playlists.elementAt(index).id!),
-                          imageUrl:
-                              playlists.elementAt(index).images!.first.url!,
-                          playlistName: playlists.elementAt(index).name!,
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    },
                   ),
-                ),
+                if (playlists != null)
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 32),
+                    sliver: SliverGrid.builder(
+                      itemCount: isLoadingMore
+                          ? playlists!.length + 1
+                          : playlists!.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 163 / 212,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                      ),
+                      itemBuilder: (context, index) {
+                        if (index < playlists!.length) {
+                          return PlaylistCard(
+                            onPress: () => _navigateToSpotifyPlaylistPage(
+                                context, playlists!.elementAt(index).id!),
+                            imageUrl:
+                                playlists!.elementAt(index).images!.first.url!,
+                            playlistName: playlists!.elementAt(index).name!,
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
               ],
             )
           : const Column(
@@ -145,28 +148,27 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
       });
 
       pageNumber++;
-      await fetchPlaylists(widget.categoryId, pageNumber: pageNumber);
+      var playlistsData = await SpotifyService.fetchPlaylists(widget.categoryId,
+          pageNumber: pageNumber);
 
+      playlists!.addAll(playlistsData!);
       setState(() {
         isLoadingMore = false;
       });
     }
   }
 
-  Future<void> fetchPlaylists(String categoryId, {int pageNumber = 0}) async {
-    int limit = 10;
-    try {
-      var userPlaylists = await spotify.playlists
-          .getByCategoryId(categoryId, country: "SE")
-          .getPage(limit, pageNumber * limit);
+  Future<void> loadData(String categoryId, {int pageNumber = 0}) async {
+    var playlistsData = await SpotifyService.fetchPlaylists(categoryId);
 
-      setState(() {
-        playlists.addAll(userPlaylists.items!.toSet());
-        isLoading = false;
-      });
-    } catch (error) {
-      debugPrint(error.toString());
+    //Adds all newly loaded data if there is any
+    if (playlistsData != null) {
+      playlists!.addAll(playlistsData);
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void _navigateToSpotifyPlaylistPage(
