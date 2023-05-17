@@ -3,6 +3,13 @@
 Palota assessment starter project | Palota Spotify Africa (Afro Category) Assessment
 
 ![Palota Logo](https://palota.co.za/assets/images/meta/og-image.png)
+***
+## Elias Kekana - Complete
+
+### What the app looks like on my android phone
+<img src="./zgif_palota_presents.gif" width="650px">
+
+***
 
 ## Getting Started
 
