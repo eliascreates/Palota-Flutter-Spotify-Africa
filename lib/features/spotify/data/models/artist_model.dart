@@ -11,11 +11,11 @@ class ArtistModel extends Artist {
 
   factory ArtistModel.fromMap(Map<String, dynamic> map) {
     return ArtistModel(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      imageUrl: map['images'][0]['url'] as String,
-      totalFollowers: map['followers']['total'] as int,
-      genres: List<String>.from((map['genres'] as List<String>)),
+      id: map['id'] as String? ?? '',
+      name: map['name'] as String? ?? 'Unknown',
+      imageUrl: map['images'][0]['url'] as String? ?? '',
+      totalFollowers: map['followers']['total'] as int? ?? 0,
+      genres: List<String>.from((map['genres'] as List<String>? ?? [])),
     );
   }
 }

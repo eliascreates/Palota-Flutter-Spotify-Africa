@@ -10,10 +10,10 @@ class CategoryModel extends Category {
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
     return CategoryModel(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      imageUrl: map['icons'][0]['url'] as String,
-      href: map['href'] as String,
+      id: map['id'] as String? ?? '',
+      name: map['name'] as String? ?? 'Unknown',
+      imageUrl: map['icons'][0]['url'] as String? ?? '',
+      href: map['href'] as String? ?? '',
     );
   }
 }
