@@ -13,7 +13,6 @@ class SpotifyRepositoryImpl implements SpotifyRepository {
     required String categoryId,
     required int pageNumber,
   }) async {
-    // TODO: implement getAllCategoryPlaylists
     try {
       final playlists = await remoteDataSource.getAllCategoryPlaylists(
         categoryId: categoryId,
@@ -29,7 +28,6 @@ class SpotifyRepositoryImpl implements SpotifyRepository {
   @override
   Future<Either<String, Artist>> getArtistById(
       {required String artistId}) async {
-    // TODO: implement getArtistById
     try {
       final artist = await remoteDataSource.getArtistById(artistId: artistId);
 
@@ -43,7 +41,6 @@ class SpotifyRepositoryImpl implements SpotifyRepository {
   Future<Either<String, Category>> getCategoryById({
     required String categoryId,
   }) async {
-    // TODO: implement getCategoryById
     try {
       final category = await remoteDataSource.getCategoryById(
         categoryId: categoryId,
@@ -59,7 +56,6 @@ class SpotifyRepositoryImpl implements SpotifyRepository {
   Future<Either<String, Playlist>> getPlaylistById({
     required String playlistId,
   }) async {
-    // TODO: implement getPlaylistById
     try {
       final playlist = await remoteDataSource.getPlaylistById(
         playlistId: playlistId,

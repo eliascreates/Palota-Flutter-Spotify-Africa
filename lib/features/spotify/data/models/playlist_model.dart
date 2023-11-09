@@ -1,5 +1,4 @@
 import '../../domain/domain.dart' show Playlist;
-
 import 'track_model.dart';
 
 class PlaylistModel extends Playlist {
@@ -22,8 +21,8 @@ class PlaylistModel extends Playlist {
       description: map['description'] as String? ?? 'No Description',
       totalFollowers: map['followers']['total'] as int? ?? 0,
       trackModels: List<TrackModel>.from(
-        (map['tracks'] as List<dynamic>? ?? []).map<TrackModel>(
-          (track) => TrackModel.fromMap(track as Map<String, dynamic>),
+        (map['tracks']['items'] as List<dynamic>? ?? []).map<TrackModel>(
+          (track) => TrackModel.fromMap(track['track'] as Map<String, dynamic>),
         ),
       ),
     );

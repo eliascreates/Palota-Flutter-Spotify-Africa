@@ -1,16 +1,14 @@
-import 'playlist.dart';
-
 class PaginatedPlaylist {
   final int offset;
   final int limit;
   final int total;
-  final List<Playlist> playlists;
+  final List<BriefPlaylistInfo> briefPlaylistInfo;
 
   PaginatedPlaylist({
     required this.offset,
     required this.limit,
     required this.total,
-    required this.playlists,
+    required this.briefPlaylistInfo,
   });
 
   bool get reachedScrollLimit {
@@ -18,5 +16,16 @@ class PaginatedPlaylist {
 
     return false;
   }
+}
 
+class BriefPlaylistInfo {
+  final String id;
+  final String imageUrl;
+  final String name;
+
+  BriefPlaylistInfo({
+    required this.id,
+    required this.imageUrl,
+    required this.name,
+  });
 }

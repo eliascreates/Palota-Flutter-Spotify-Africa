@@ -2,17 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'features/spotify/data/datasource/spotify_remote_datasource.dart';
-import 'package:http/http.dart' as http;
-
 void main() async {
-  final dataSource = SpotifyRemoteDataSourceImpl(client: http.Client());
-
-  final category = await dataSource.getCategoryById(categoryId: 'afro');
-
-  debugPrint(
-    'Category(name: ${category.name}, imageUrl: ${category.imageUrl}, id: ${category.id})',
-  );
   runApp(const PalotaAssessmentApp());
 }
 

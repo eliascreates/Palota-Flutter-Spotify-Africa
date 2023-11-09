@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import '../models/models.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +8,7 @@ abstract class SpotifyRemoteDataSource {
 
   Future<PaginatedPlaylistModel> getAllCategoryPlaylists({
     required String categoryId,
-    required int pageNumber,
+    int pageNumber = 0,
   });
 
   Future<PlaylistModel> getPlaylistById({required String playlistId});
@@ -24,7 +23,7 @@ const baseUrl = 'https://palota-jobs-africa-spotify-fa.azurewebsites.net/api';
 
 const playlistUrl = '$baseUrl/playlists';
 const categoryUrl = '$baseUrl/browse/categories';
-
+const artistUrl = '$baseUrl/artists';
 const headers = {'x-functions-key': apiKey};
 
 class SpotifyRemoteDataSourceImpl implements SpotifyRemoteDataSource {
@@ -40,9 +39,7 @@ class SpotifyRemoteDataSourceImpl implements SpotifyRemoteDataSource {
         headers: headers,
       );
 
-      log('we got a response');
       if (response.statusCode == 200) {
-        log('success');
         final Map<String, dynamic> categoryData = jsonDecode(response.body);
 
         final category = CategoryModel.fromMap(categoryData);
@@ -50,50 +47,87 @@ class SpotifyRemoteDataSourceImpl implements SpotifyRemoteDataSource {
         return category;
       }
       throw Exception(
-        'getCategoryById reponse failed with status code: ${response.statusCode}',
+        'getCategoryById ($categoryId) reponse failed with status code: ${response.statusCode}',
       );
     } catch (e) {
-      throw Exception('Failed to fetch category by id: $categoryId');
+      rethrow;
     }
   }
 
   @override
   Future<PaginatedPlaylistModel> getAllCategoryPlaylists({
     required String categoryId,
-    required int pageNumber,
+    int pageNumber = 0,
   }) async {
     try {
       final offset = pageNumber * limit;
 
       final response = await client.get(
-        Uri.parse('$playlistUrl/$categoryId?limit=$limit&offset=$offset'),
+        Uri.parse(
+          '$categoryUrl/$categoryId/playlists?limit=$limit&offset=$offset',
+        ),
         headers: headers,
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> playlistsData = jsonDecode(response.body);
 
-        final paginatedPlaylist = PaginatedPlaylistModel.fromMap(playlistsData);
+        final Map<String, dynamic> data = jsonDecode(response.body);
+
+        final paginatedPlaylist = PaginatedPlaylistModel.fromMap(
+          data['playlists'],
+        );
 
         return paginatedPlaylist;
       }
 
       throw Exception(
-          'getAllCategoryPlaylists response failed with status code: ${response.statusCode}');
+        'getAllCategoryPlaylists ($categoryId) response failed with status code: ${response.statusCode}',
+      );
     } catch (e) {
-      throw Exception('Failed to fetch playlists of category: $categoryId');
+      rethrow;
     }
   }
 
   @override
-  Future<ArtistModel> getArtistById({required String artistId}) {
-    // TODO: implement getArtistById
-    throw UnimplementedError();
+  Future<ArtistModel> getArtistById({required String artistId}) async {
+    try {
+      final response =
+          await client.get(Uri.parse('$artistUrl/$artistId'), headers: headers);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> artistData = jsonDecode(response.body);
+
+        final artist = ArtistModel.fromMap(artistData);
+
+        return artist;
+      }
+
+      throw Exception(
+        'getArtistById ($artistId) response failed with status code: ${response.statusCode}',
+      );
+    } catch (_) {
+      rethrow;
+    }
   }
 
   @override
-  Future<PlaylistModel> getPlaylistById({required String playlistId}) {
-    // TODO: implement getPlaylistById
-    throw UnimplementedError();
+  Future<PlaylistModel> getPlaylistById({required String playlistId}) async {
+    try {
+      final response = await client.get(Uri.parse('$playlistUrl/$playlistId'),
+          headers: headers);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> playlistData = jsonDecode(response.body);
+
+        final playlist = PlaylistModel.fromMap(playlistData);
+
+        return playlist;
+      }
+      throw Exception(
+        'getPlaylistById ($playlistId) response failed with status code: ${response.statusCode}',
+      );
+    } catch (_) {
+      rethrow;
+    }
   }
 }
