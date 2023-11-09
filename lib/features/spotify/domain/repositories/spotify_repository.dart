@@ -7,8 +7,9 @@ abstract class SpotifyRepository {
     required String categoryId,
   });
 
-  Future<Either<String, List<Playlist>>> getAllCategoryPlaylists({
+  Future<Either<String, PaginatedPlaylist>> getAllCategoryPlaylists({
     required String categoryId,
+    required int pageNumber,
   });
 
   Future<Either<String, Playlist>> getPlaylistById({

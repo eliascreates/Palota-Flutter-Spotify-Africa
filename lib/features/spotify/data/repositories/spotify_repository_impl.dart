@@ -9,13 +9,15 @@ class SpotifyRepositoryImpl implements SpotifyRepository {
   const SpotifyRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<String, List<Playlist>>> getAllCategoryPlaylists({
+  Future<Either<String, PaginatedPlaylist>> getAllCategoryPlaylists({
     required String categoryId,
+    required int pageNumber,
   }) async {
     // TODO: implement getAllCategoryPlaylists
     try {
       final playlists = await remoteDataSource.getAllCategoryPlaylists(
         categoryId: categoryId,
+        pageNumber: pageNumber,
       );
 
       return Right(playlists);
