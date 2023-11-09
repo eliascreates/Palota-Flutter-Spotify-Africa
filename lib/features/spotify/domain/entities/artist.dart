@@ -4,7 +4,6 @@ class Artist {
   final String imageUrl;
   final int totalFollowers;
   final List<String> genres;
-  final String type;
   
   Artist({
     required this.totalFollowers,
@@ -12,7 +11,5 @@ class Artist {
     required this.id,
     required this.imageUrl,
     required this.name,
-    required this.type,
   });
 }
-
