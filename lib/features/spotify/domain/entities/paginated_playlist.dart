@@ -11,11 +11,6 @@ class PaginatedPlaylist {
     required this.briefPlaylistInfo,
   });
 
-  bool get reachedScrollLimit {
-    if ((total - limit) < offset) return true;
-
-    return false;
-  }
 }
 
 class BriefPlaylistInfo {

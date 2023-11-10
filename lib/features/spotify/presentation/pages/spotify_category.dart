@@ -9,9 +9,6 @@ import '../../domain/domain.dart';
 import '../bloc/bloc.dart';
 import '../widgets/widgets.dart';
 
-// TODO: fetch and populate playlist info and allow for click-through to detail
-// Feel free to change this to a stateful widget if necessary
-
 class SpotifyCategoryPage extends StatelessWidget {
   final String categoryId;
 
@@ -53,18 +50,16 @@ class SpotifyCategoryView extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: <Color>[
-                AppColors.blue,
-                AppColors.cyan,
-                AppColors.green,
-              ],
+              colors: [AppColors.blue, AppColors.cyan, AppColors.green],
             ),
           ),
         ),
       ),
       body: BlocBuilder<SpotifyBloc, SpotifyCategoryState>(
         builder: (context, state) {
-          if (state.status == CategoryStatus.loading) {
+
+          if (state.status == CategoryStatus.loading &&
+              state.playlists.isEmpty) {
             return const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -72,28 +67,16 @@ class SpotifyCategoryView extends StatelessWidget {
               ],
             );
           }
-          return CustomScrollView(
-            scrollDirection: Axis.vertical,
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    CategoryHeader(
-                      imageUrl: state.category.imageUrl,
-                      categoryName: categoryId,
-                    ),
-                  ],
-                ),
-              ),
-              const PlaylistList(),
-              const SliverToBoxAdapter(
-                child: Center(
-                  child: CircularProgressIndicator(color: AppColors.cyan),
-                ),
-              ),
-            ],
-          );
+
+          if (state.status == CategoryStatus.failure && state.errorMessage != null) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(child: Text('${state.errorMessage}')),
+              ],
+            );
+          }
+          return CategoryPlaylistBody(categoryId: categoryId);
         },
       ),
     );

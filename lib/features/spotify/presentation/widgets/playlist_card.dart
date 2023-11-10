@@ -8,61 +8,26 @@ class PlaylistCard extends StatelessWidget {
 
   const PlaylistCard({
     super.key,
-    required this.onPress,
+    required this.onTap,
     required this.imageUrl,
     required this.playlistName,
-
-    //Default sizes for category playlist
-    this.imageSize = 155,
-    this.imageRadius = 8,
-    this.containerRadius = 12,
-    this.containerPadding = 4,
-    this.fontSize = 12,
-    this.fontWeight = FontWeight.w500,
-    this.textPadding = 4,
   });
 
-  final VoidCallback onPress;
-
-  final double imageSize;
-  final double imageRadius;
-  final FontWeight fontWeight;
-  final double containerRadius;
-  final double containerPadding;
-  final double fontSize;
-  final double textPadding;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPress,
+      onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(containerPadding),
+        padding: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
           color: const Color(0xFF211F26),
-          borderRadius: BorderRadius.circular(containerRadius),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Container(
-            //   decoration: BoxDecoration(boxShadow: [
-            //     BoxShadow(
-            //       blurRadius: 4,
-            //       color: Colors.black.withOpacity(0.25),
-            //       offset: const Offset(0, 4),
-            //     )
-            //   ]),
-            //   child: ClipRRect(
-            //     borderRadius: BorderRadius.circular(imageRadius),
-            //     child: Image.network(
-            //       imageUrl,
-            //       height: imageSize,
-            //       width: imageSize,
-            //       fit: BoxFit.fill,
-            //     ),
-            //   ),
-            // ),
             CachedNetworkImage(
               imageUrl: imageUrl,
               placeholder: (context, url) => Container(
@@ -109,13 +74,91 @@ class PlaylistCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.roboto(
                   letterSpacing: 0.5,
-                  fontSize: fontSize,
-                  fontWeight: fontWeight,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PlaylistDetailCard extends StatelessWidget {
+  final String imageUrl;
+  final String name;
+
+  const PlaylistDetailCard({
+    super.key,
+    required this.imageUrl,
+    required this.name,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(15.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFF211F26),
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            placeholder: (context, url) => Container(
+              height: 263,
+              width: 263,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 4,
+                    color: Colors.black.withOpacity(0.25),
+                    offset: const Offset(0, 4),
+                  )
+                ],
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) => Container(
+              height: 263,
+              width: 263,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 4,
+                    color: Colors.black.withOpacity(0.25),
+                    offset: const Offset(0, 4),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4).copyWith(top: 8),
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.roboto(
+                letterSpacing: 0.5,
+                fontSize: 22.0,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

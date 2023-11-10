@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'spotify_bloc.dart';
 
 enum CategoryStatus { initial, loading, success, failure }
@@ -14,14 +15,16 @@ class SpotifyCategoryState extends Equatable {
       total: 0,
       briefPlaylistInfo: [],
     ),
+    this.hasReachedScrollLimit = false,
     this.errorMessage,
   });
 
   final Category category;
-  final PaginatedPlaylist? playlistPager;
+  final PaginatedPlaylist playlistPager;
   final List<BriefPlaylistInfo> playlists;
   final CategoryStatus status;
   final int pageNumber;
+  final bool hasReachedScrollLimit;
   final String? errorMessage;
 
   SpotifyCategoryState copyWith({
@@ -29,6 +32,8 @@ class SpotifyCategoryState extends Equatable {
     PaginatedPlaylist? playlistPager,
     List<BriefPlaylistInfo>? playlists,
     CategoryStatus? status,
+    int? pageNumber,
+    bool? hasReachedScrollLimit,
     String? errorMessage,
   }) {
     return SpotifyCategoryState(
@@ -36,6 +41,9 @@ class SpotifyCategoryState extends Equatable {
       playlistPager: playlistPager ?? this.playlistPager,
       playlists: playlists ?? this.playlists,
       status: status ?? this.status,
+      hasReachedScrollLimit:
+          hasReachedScrollLimit ?? this.hasReachedScrollLimit,
+      pageNumber: pageNumber ?? this.pageNumber,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -43,9 +51,16 @@ class SpotifyCategoryState extends Equatable {
   @override
   List<Object?> get props => [
         playlistPager,
+        playlists,
         category,
         pageNumber,
         status,
+        hasReachedScrollLimit,
         errorMessage,
       ];
+
+  @override
+  String toString() {
+    return 'SpotifyCategoryState(playlistPager: $playlistPager, category: $category, playlists: ${playlists.length}, pageNumber: $pageNumber, status: $status, hasReachedScrollLimit: $hasReachedScrollLimit, errorMessage: $errorMessage)';
+  }
 }

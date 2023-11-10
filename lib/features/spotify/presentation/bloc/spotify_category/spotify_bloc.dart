@@ -33,7 +33,6 @@ class SpotifyBloc extends Bloc<SpotifyCategoryEvent, SpotifyCategoryState> {
     SpotifyCategoryFetchedById event,
     Emitter<SpotifyCategoryState> emit,
   ) async {
-    // TODO: implement event handler
     emit(state.copyWith(status: CategoryStatus.loading, errorMessage: null));
 
     final result = await getCategoryById(categoryId: event.categoryId);
@@ -57,7 +56,8 @@ class SpotifyBloc extends Bloc<SpotifyCategoryEvent, SpotifyCategoryState> {
     SpotifyCategoryPlaylistsFetched event,
     Emitter<SpotifyCategoryState> emit,
   ) async {
-    // TODO: implement event handler
+    if (state.hasReachedScrollLimit) return;
+
     emit(state.copyWith(status: CategoryStatus.loading, errorMessage: null));
 
     final result = await getAllCategoryPlaylists(
@@ -72,14 +72,18 @@ class SpotifyBloc extends Bloc<SpotifyCategoryEvent, SpotifyCategoryState> {
           errorMessage: failureMessage,
         ),
         (playlistPager) async {
-          
           final combinedPlaylists = List.of(state.playlists)
             ..addAll(playlistPager.briefPlaylistInfo);
+
+          final isMaxLimit = (playlistPager.total - playlistPager.limit) <
+              playlistPager.offset;
 
           return state.copyWith(
             playlistPager: playlistPager,
             playlists: combinedPlaylists,
             status: CategoryStatus.success,
+            pageNumber: state.pageNumber + 1,
+            hasReachedScrollLimit: isMaxLimit,
             errorMessage: null,
           );
         },

@@ -31,7 +31,7 @@ class PlaylistList extends StatelessWidget {
           return PlaylistCard(
             playlistName: currentPlaylist.name,
             imageUrl: currentPlaylist.imageUrl,
-            onPress: () => _navigateToSpotifyPlaylistPage(
+            onTap: () => _navigateToSpotifyPlaylistPage(
               context,
               currentPlaylist.id,
             ),

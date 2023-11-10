@@ -31,17 +31,10 @@ class SpotifyPlaylist extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 48.0)
                         .copyWith(bottom: 15),
-                    child: PlaylistCard(
-                        fontSize: 22,
-                        imageRadius: 12,
-                        fontWeight: FontWeight.w400,
-                        textPadding: 15,
-                        containerRadius: 24,
-                        containerPadding: 15,
-                        imageSize: 263,
-                        onPress: () {},
-                        imageUrl: '',
-                        playlistName: ''),
+                    child: const PlaylistDetailCard(
+                      imageUrl: '',
+                      name: '',
+                    ),
                   ),
 
                   const PlaylistDescription(text: ''),
