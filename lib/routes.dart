@@ -32,7 +32,7 @@ class AppRoutes {
       case spotifyCategory:
         final String categoryId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (BuildContext context) => SpotifyCategory(
+          builder: (BuildContext context) => SpotifyCategoryPage(
             categoryId: categoryId,
           ),
           settings: settings,

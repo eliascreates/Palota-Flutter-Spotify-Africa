@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 class PlaylistFollowers extends StatelessWidget {
   const PlaylistFollowers({
     super.key,
-    required this.numFollowers,
+    required this.total,
   });
 
-  final int? numFollowers;
+  final int? total;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class PlaylistFollowers extends StatelessWidget {
                 BorderRadiusDirectional.horizontal(start: Radius.circular(12)),
           ),
           child: Text(
-            formatNumFollowers(numFollowers),
+            formatNumFollowers(total),
             textAlign: TextAlign.end,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   fontWeight: FontWeight.w500,
