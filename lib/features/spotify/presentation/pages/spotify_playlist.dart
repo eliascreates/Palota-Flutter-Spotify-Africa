@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/colors.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/playlist_card.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/widgets/playlist_card.dart';
 
-import '../components/artist_card.dart';
-import '../components/artist_track_card.dart';
-import '../components/playlist_followers.dart';
-import '../components/show_error_message.dart';
+import '../widgets/artist_card.dart';
+import '../widgets/artist_track_card.dart';
+import '../widgets/playlist_followers.dart';
+import '../widgets/show_error_message.dart';
 
 //TODO: complete this page - you may choose to change it to a stateful widget if necessary
 class SpotifyPlaylist extends StatelessWidget {

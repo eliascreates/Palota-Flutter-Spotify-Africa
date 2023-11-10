@@ -4,7 +4,7 @@ class PaginatedPlaylist {
   final int total;
   final List<BriefPlaylistInfo> briefPlaylistInfo;
 
-  PaginatedPlaylist({
+  const PaginatedPlaylist({
     required this.offset,
     required this.limit,
     required this.total,
@@ -23,7 +23,7 @@ class BriefPlaylistInfo {
   final String imageUrl;
   final String name;
 
-  BriefPlaylistInfo({
+  const BriefPlaylistInfo({
     required this.id,
     required this.imageUrl,
     required this.name,

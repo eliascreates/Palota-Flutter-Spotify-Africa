@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CategoryHeader extends StatelessWidget {
   final String imageUrl;
-  final String categoryId;
-  final String categoryType;
+  final String categoryName;
 
   const CategoryHeader({
     super.key,
     required this.imageUrl,
-    required this.categoryId,
-    required this.categoryType,
+    required this.categoryName,
   });
 
   @override
@@ -26,13 +25,25 @@ class CategoryHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              imageUrl,
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            placeholder: (context, url) => Container(
               height: 64,
               width: 64,
-              fit: BoxFit.fill,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) => Container(
+              height: 64,
+              width: 64,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
             ),
           ),
           const SizedBox(width: 16),
@@ -41,14 +52,14 @@ class CategoryHeader extends StatelessWidget {
               children: [
                 TextSpan(
                   text:
-                      '${categoryId[0].toUpperCase() + categoryId.substring(1)} ',
+                      '${categoryName[0].toUpperCase() + categoryName.substring(1)} ',
                   style: Theme.of(context)
                       .textTheme
                       .headlineMedium!
                       .copyWith(fontWeight: FontWeight.w700),
                 ),
                 TextSpan(
-                  text: '${categoryType}s',
+                  text: 'playlists',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],

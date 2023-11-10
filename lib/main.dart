@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'service_locator.dart' as di;
 
-void main() async {
+Future<void> main() async {
+  await di.init();
   runApp(const PalotaAssessmentApp());
 }
 

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
+import 'package:flutter_spotify_africa_assessment/service_locator.dart';
 
-import '../bloc/spotify_category_bloc/spotify_category_bloc.dart';
-import '../components/category_header.dart';
-import '../components/playlist_card.dart';
+import '../../domain/domain.dart';
+import '../bloc/bloc.dart';
+import '../widgets/widgets.dart';
 
 // TODO: fetch and populate playlist info and allow for click-through to detail
 // Feel free to change this to a stateful widget if necessary
@@ -18,13 +20,12 @@ class SpotifyCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SpotifyCategoryBloc()
-        ..add(
-          SpotifyCategoryPlaylistsFetched(
-            categoryId: categoryId,
-            pageNumber: 0,
-          ),
-        ),
+      create: (context) => SpotifyBloc(
+        getCategoryById: sl<GetCategoryById>(),
+        getAllCategoryPlaylists: sl<GetAllCategoryPlaylists>(),
+      )
+        ..add(SpotifyCategoryFetchedById(categoryId: categoryId))
+        ..add(SpotifyCategoryPlaylistsFetched(categoryId: categoryId)),
       child: SpotifyCategoryView(categoryId: categoryId),
     );
   }
@@ -40,9 +41,7 @@ class SpotifyCategoryView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          categoryId[0].toUpperCase() + categoryId.substring(1),
-        ),
+        title: Text(categoryId[0].toUpperCase() + categoryId.substring(1)),
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
@@ -63,7 +62,7 @@ class SpotifyCategoryView extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocBuilder<SpotifyCategoryBloc, SpotifyCategoryState>(
+      body: BlocBuilder<SpotifyBloc, SpotifyCategoryState>(
         builder: (context, state) {
           if (state.status == CategoryStatus.loading) {
             return const Column(
@@ -73,49 +72,21 @@ class SpotifyCategoryView extends StatelessWidget {
               ],
             );
           }
-          final paginatedPlaylist = state.paginatedPlaylist!;
-
-          final playlists = paginatedPlaylist.briefPlaylistInfo;
-
           return CustomScrollView(
             scrollDirection: Axis.vertical,
-            shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             slivers: [
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
                     CategoryHeader(
-                      imageUrl: '',
-                      categoryId: categoryId,
-                      categoryType: '',
+                      imageUrl: state.category.imageUrl,
+                      categoryName: categoryId,
                     ),
                   ],
                 ),
               ),
-              SliverPadding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-                sliver: SliverGrid.builder(
-                  itemCount: playlists.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 163 / 212,
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                  ),
-                  itemBuilder: (context, index) {
-                    return PlaylistCard(
-                      onPress: () => _navigateToSpotifyPlaylistPage(
-                        context,
-                        playlists.elementAt(index).id,
-                      ),
-                      imageUrl: '',
-                      playlistName: '',
-                    );
-                  },
-                ),
-              ),
+              const PlaylistList(),
               const SliverToBoxAdapter(
                 child: Center(
                   child: CircularProgressIndicator(color: AppColors.cyan),
@@ -125,16 +96,6 @@ class SpotifyCategoryView extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  void _navigateToSpotifyPlaylistPage(
-    BuildContext context,
-    String spotifyPlaylistId,
-  ) {
-    Navigator.of(context).pushNamed(
-      AppRoutes.spotifyPlaylist,
-      arguments: spotifyPlaylistId,
     );
   }
 }
