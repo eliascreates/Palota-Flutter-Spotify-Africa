@@ -1,14 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spotify_africa_assessment/debug.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/data/data.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/domain/domain.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:flutter_spotify_africa_assessment/debug.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/spotify.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
 //* FEATURES
+
   //? Spotify
 
   //Usecases
