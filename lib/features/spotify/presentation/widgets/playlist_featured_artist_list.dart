@@ -44,7 +44,7 @@ class _PlaylistFeaturedArtistListState
       opacity: isLoadingArtistStatus ? 0 : 1,
       child: Container(
         margin: const EdgeInsets.only(bottom: 42),
-        height: 143,
+        height: 145,
         child: ListView.builder(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
