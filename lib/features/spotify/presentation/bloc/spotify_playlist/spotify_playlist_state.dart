@@ -4,13 +4,20 @@ enum PlaylistStatus { initial, loading, success, failure }
 
 class SpotifyPlaylistState extends Equatable {
   const SpotifyPlaylistState({
-    this.playlist,
     this.artists = const [],
     this.status = PlaylistStatus.initial,
     this.errorMessage,
+    this.playlist = const Playlist(
+      description: '',
+      totalFollowers: 0,
+      id: '',
+      imageUrl: '',
+      name: '',
+      tracks: [],
+    ),
   });
 
-  final Playlist? playlist;
+  final Playlist playlist;
   final List<Artist> artists;
   final PlaylistStatus status;
   final String? errorMessage;

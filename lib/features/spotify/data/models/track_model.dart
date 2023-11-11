@@ -15,7 +15,7 @@ class TrackModel extends Track {
     return TrackModel(
       id: map['id'] as String? ?? '',
       name: map['name'] as String? ?? 'Unknown',
-      imageUrl: map['album']['images'][0]['url'] as String? ?? '',
+      imageUrl: map['album']['images'][2]['url'] as String? ?? '',
 
       artistTrackInfoModel: List<ArtistTrackInfoModel>.from(
         (map['artists'] as List<dynamic>).map<ArtistTrackInfo>(

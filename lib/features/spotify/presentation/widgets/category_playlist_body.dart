@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spotify_africa_assessment/colors.dart';
 
 import '../bloc/bloc.dart';
 import 'category_header.dart';
-import 'playlist_list.dart';
+import 'category_playlist_list.dart';
 
 class CategoryPlaylistBody extends StatefulWidget {
   const CategoryPlaylistBody({super.key, required this.categoryId});
@@ -50,12 +49,11 @@ class _CategoryPlaylistBodyState extends State<CategoryPlaylistBody> {
             ],
           ),
         ),
-        const PlaylistList(),
+        const CategoryPlaylistList(),
         if (_isBottomOfList && !reachedScrollLimit)
           const SliverToBoxAdapter(
-            child: Center(
-              child: CircularProgressIndicator(color: AppColors.cyan)
-            ),
+            child:
+                Center(child: CircularProgressIndicator(color: AppColors.cyan)),
           ),
       ],
     );

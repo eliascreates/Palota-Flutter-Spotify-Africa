@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/domain/domain.dart';
 
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 
 import '../bloc/bloc.dart';
-import 'playlist_card.dart';
+import 'category_playlist_card.dart';
 
-class PlaylistList extends StatelessWidget {
-  const PlaylistList({super.key});
+class CategoryPlaylistList extends StatelessWidget {
+  const CategoryPlaylistList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +29,11 @@ class PlaylistList extends StatelessWidget {
         itemBuilder: (context, index) {
           final currentPlaylist = playlists[index];
 
-          return PlaylistCard(
-            playlistName: currentPlaylist.name,
-            imageUrl: currentPlaylist.imageUrl,
-            onTap: () => _navigateToSpotifyPlaylistPage(
-              context,
-              currentPlaylist.id,
-            ),
+          return CategoryPlaylistCard(
+            playlistInfo: currentPlaylist,
+            onTap: () {
+              _navigateToSpotifyPlaylistPage(context, currentPlaylist);
+            },
           );
         },
       ),
@@ -43,11 +42,11 @@ class PlaylistList extends StatelessWidget {
 
   void _navigateToSpotifyPlaylistPage(
     BuildContext context,
-    String spotifyPlaylistId,
+    BriefPlaylistInfo currentPlaylist,
   ) {
     Navigator.of(context).pushNamed(
       AppRoutes.spotifyPlaylist,
-      arguments: spotifyPlaylistId,
+      arguments: currentPlaylist,
     );
   }
 }

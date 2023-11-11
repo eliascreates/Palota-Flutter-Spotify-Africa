@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/features/about/presentation/pages/about.dart';
 import 'package:flutter_spotify_africa_assessment/features/landing/presentation/pages/landing.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/domain/domain.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/pages/spotify_category.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/pages/spotify_playlist.dart';
 
@@ -39,10 +40,10 @@ class AppRoutes {
         );
       // TODO: handle other routes
       case spotifyPlaylist:
-        final String playlistId = settings.arguments as String;
+        final playlistInfo = settings.arguments as BriefPlaylistInfo;
         return MaterialPageRoute(
-          builder: (BuildContext context) => SpotifyPlaylist(
-            playlistId: playlistId,
+          builder: (BuildContext context) => SpotifyPlaylistPage(
+            briefPlaylistInfo: playlistInfo,
           ),
           settings: settings,
         );

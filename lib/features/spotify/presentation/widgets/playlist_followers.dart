@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/bloc/bloc.dart';
 import 'package:intl/intl.dart';
 
 class PlaylistFollowers extends StatelessWidget {
-  const PlaylistFollowers({
-    super.key,
-    required this.total,
-  });
-
-  final int? total;
+  const PlaylistFollowers({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final total = context.select(
+      (SpotifyPlaylistCubit cubit) => cubit.state.playlist.totalFollowers,
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -22,14 +23,18 @@ class PlaylistFollowers extends StatelessWidget {
             borderRadius:
                 BorderRadiusDirectional.horizontal(start: Radius.circular(12)),
           ),
-          child: Text(
-            formatNumFollowers(total),
-            textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.5,
-                  fontSize: 11,
-                ),
+          child: AnimatedOpacity(
+            opacity: total == 0 ? 0 : 1,
+            duration: const Duration(seconds: 1),
+            child: Text(
+              formatNumFollowers(total),
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.5,
+                    fontSize: 11,
+                  ),
+            ),
           ),
         ),
       ],

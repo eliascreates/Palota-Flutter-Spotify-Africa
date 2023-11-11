@@ -1,44 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-class FeaturedHeader extends StatelessWidget {
-  const FeaturedHeader({
-    super.key,
-    required this.title,
-  });
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          width: 342,
-          padding: const EdgeInsets.symmetric(vertical: 12).copyWith(left: 16),
-          decoration: BoxDecoration(
-              color: const Color(0xFF211F26),
-              borderRadius: const BorderRadiusDirectional.horizontal(
-                end: Radius.circular(12),
-              ),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    offset: const Offset(0, 4),
-                    blurRadius: 4)
-              ]),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w400,
-                ),
-          ),
-        ),
-        const SizedBox(height: 40),
-      ],
-    );
-  }
-}
 
 class ArtistCard extends StatelessWidget {
   const ArtistCard({
@@ -56,13 +17,37 @@ class ArtistCard extends StatelessWidget {
       margin: const EdgeInsets.only(left: 32),
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: Image.network(
-              imageUrl,
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(32),
+          //   child: Image.network(
+          //     imageUrl,
+          //     height: 120,
+          //     width: 120,
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            placeholder: (context, url) => Container(
               height: 120,
               width: 120,
-              fit: BoxFit.cover,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(32.0),
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) => Container(
+              height: 120,
+              width: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32.0),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 8),

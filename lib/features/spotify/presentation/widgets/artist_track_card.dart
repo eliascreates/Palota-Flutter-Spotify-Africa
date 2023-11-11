@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class ArtistTrackCard extends StatelessWidget {
-  const ArtistTrackCard({
+class ArtistTrackTile extends StatelessWidget {
+  const ArtistTrackTile({
     super.key,
     required this.imageUrl,
     required this.artistName,
@@ -20,13 +21,28 @@ class ArtistTrackCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 16),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: Image.network(
-              imageUrl,
-              width: 48,
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            placeholder: (context, url) => Container(
               height: 48,
-              fit: BoxFit.fill,
+              width: 48,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) => Container(
+              height: 48,
+              width: 48,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6.0),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
           const SizedBox(width: 16),

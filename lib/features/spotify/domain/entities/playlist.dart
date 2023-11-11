@@ -8,7 +8,7 @@ class Playlist {
   final int totalFollowers;
   final List<Track> tracks;
 
-  Playlist({
+  const Playlist({
     required this.description,
     required this.totalFollowers,
     required this.id,
