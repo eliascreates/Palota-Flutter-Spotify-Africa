@@ -1,6 +1,6 @@
 part of 'spotify_playlist_cubit.dart';
 
-enum PlaylistStatus { initial, loading, success, failure }
+enum PlaylistStatus { initial, loading, loadingArtists, success, failure }
 
 class SpotifyPlaylistState extends Equatable {
   const SpotifyPlaylistState({
@@ -36,6 +36,20 @@ class SpotifyPlaylistState extends Equatable {
     );
   }
 
+  List<String> get extractAllArtistIds {
+    if (playlist.tracks.isEmpty) return [];
+
+    List<String> ids = [];
+    for (final track in playlist.tracks) {
+      ids.addAll(track.artistTrackInfo.map((a) => a.id));
+    }
+    return ids;
+  }
+
   @override
-  List<Object?> get props => [playlist, artists, status];
+  String toString() =>
+      'SpotifyPlaylistState(playlist: $playlist, artists: ${artists.length}, status: $status, errorMessage: $errorMessage)';
+
+  @override
+  List<Object?> get props => [playlist, artists, status, errorMessage];
 }

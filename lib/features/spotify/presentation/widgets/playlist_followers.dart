@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/bloc/bloc.dart';
 import 'package:intl/intl.dart';
+
+import '../bloc/bloc.dart';
 
 class PlaylistFollowers extends StatelessWidget {
   const PlaylistFollowers({super.key});
@@ -41,12 +42,9 @@ class PlaylistFollowers extends StatelessWidget {
     );
   }
 
-  String formatNumFollowers(int? numFollowers) {
+  String formatNumFollowers(int numFollowers) {
     var thousandSeparator = NumberFormat("#,###,000");
-    if (numFollowers != null) {
-      return "${thousandSeparator.format(numFollowers)} Followers";
-    }
 
-    return "No Followers yet";
+    return "${thousandSeparator.format(numFollowers)} Followers";
   }
 }

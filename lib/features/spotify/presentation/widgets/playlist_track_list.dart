@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/bloc/bloc.dart';
 
+import '../bloc/bloc.dart';
 import 'artist_track_card.dart';
 
 class PlaylistTrackList extends StatelessWidget {
@@ -9,7 +9,7 @@ class PlaylistTrackList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.select((SpotifyPlaylistCubit cubit) => cubit.state);
+    final state = context.watch<SpotifyPlaylistCubit>().state;
 
     final isLoadingStatus = state.status == PlaylistStatus.loading;
 
@@ -27,7 +27,7 @@ class PlaylistTrackList extends StatelessWidget {
     }
 
     return SliverAnimatedOpacity(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 500),
       opacity: isLoadingStatus ? 0 : 1,
       sliver: SliverList.builder(
         itemCount: tracklist.length,

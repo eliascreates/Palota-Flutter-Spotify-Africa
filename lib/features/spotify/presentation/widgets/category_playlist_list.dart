@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/domain/domain.dart';
 
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 
+import '../../domain/domain.dart';
 import '../bloc/bloc.dart';
 import 'category_playlist_card.dart';
 

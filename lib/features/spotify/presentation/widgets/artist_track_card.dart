@@ -86,8 +86,8 @@ class ArtistTrackTile extends StatelessWidget {
     );
   }
 
-  String formatDuration(Duration duration) {
     //Some songs like LoFi music can be over 60 minutes long
+  String formatDuration(Duration duration) {
     String hours = duration.inHours.toString().padLeft(2, '0');
     String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
     String seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');

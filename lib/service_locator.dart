@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spotify_africa_assessment/debug.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/data/datasource/spotify_remote_datasource.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/data/repositories/spotify_repository_impl.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/data/data.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/domain/domain.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -32,5 +31,5 @@ Future<void> init() async {
   sl.registerLazySingleton(() => http.Client());
 
   //*Uncomment the line below to see useful logs about any bloc in the terminal.
-  // Bloc.observer = PalotaSpotifyObserver();
+  Bloc.observer = PalotaSpotifyObserver();
 }

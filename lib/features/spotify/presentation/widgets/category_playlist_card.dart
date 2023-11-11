@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spotify_africa_assessment/features/spotify/domain/domain.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../domain/domain.dart';
 
 class CategoryPlaylistCard extends StatelessWidget {
   final BriefPlaylistInfo playlistInfo;

@@ -1,33 +1,64 @@
 part of 'playlist_featured_content.dart';
 
-class PlaylistFeaturedArtistList extends StatelessWidget {
+class PlaylistFeaturedArtistList extends StatefulWidget {
   const PlaylistFeaturedArtistList({super.key});
 
   @override
+  State<PlaylistFeaturedArtistList> createState() =>
+      _PlaylistFeaturedArtistListState();
+}
+
+class _PlaylistFeaturedArtistListState
+    extends State<PlaylistFeaturedArtistList> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SpotifyPlaylistCubit>().getAllFeaturedArtists();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // final playlist = context.select(
-    //   (SpotifyPlaylistCubit cubit) => cubit.state.playlist,
-    // );
+    final state = context.watch<SpotifyPlaylistCubit>().state;
+    final isLoadingArtistStatus = state.status == PlaylistStatus.loadingArtists;
+    final isLoadingStatus = state.status == PlaylistStatus.loading;
+    final isNotLoading = !isLoadingArtistStatus && !isLoadingStatus;
 
-    // final artists = playlist.tracks.map
+    final artists = context.select(
+      (SpotifyPlaylistCubit cubit) => cubit.state.artists,
+    );
 
-    return SliverToBoxAdapter(
+    if (artists.isEmpty && isNotLoading) {
+      return const SizedBox(
+        height: 100,
+        child: Center(
+          child: Text(
+            "No Featured Artists Information",
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      );
+    }
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 500),
+      opacity: isLoadingArtistStatus ? 0 : 1,
       child: Container(
         margin: const EdgeInsets.only(bottom: 42),
         height: 143,
         child: ListView.builder(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
-          itemCount: 1,
+          itemCount: artists.length,
           itemBuilder: (context, index) {
-            return const ArtistCard(imageUrl: '', artistName: '');
+            final artist = artists[index];
+
+            return ArtistCard(
+              imageUrl: artist.imageUrl,
+              artistName: artist.name,
+            );
           },
         ),
       ),
     );
   }
 }
-
-// const ShowErrorMessage(
-//             message: "Couldn't Fetch Featured Artists Information",
-//           ),

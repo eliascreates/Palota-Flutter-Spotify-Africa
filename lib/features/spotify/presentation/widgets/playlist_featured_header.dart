@@ -1,9 +1,7 @@
 part of 'playlist_featured_content.dart';
 
 class FeaturedHeader extends StatelessWidget {
-  const FeaturedHeader({super.key, required this.title});
-
-  final String title;
+  const FeaturedHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class FeaturedHeader extends StatelessWidget {
                     blurRadius: 4)
               ]),
           child: Text(
-            title,
+            "Featured Artists",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontSize: 22,
                   fontWeight: FontWeight.w400,

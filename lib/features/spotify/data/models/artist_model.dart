@@ -13,7 +13,7 @@ class ArtistModel extends Artist {
     return ArtistModel(
       id: map['id'] as String? ?? '',
       name: map['name'] as String? ?? 'Unknown',
-      imageUrl: map['images'][0]['url'] as String? ?? '',
+      imageUrl: map['images'][2]['url'] as String? ?? '',
       totalFollowers: map['followers']['total'] as int? ?? 0,
       genres: List<String>.from((map['genres'] as List<dynamic>? ?? [])),
     );

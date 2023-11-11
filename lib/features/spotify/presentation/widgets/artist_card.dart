@@ -17,15 +17,6 @@ class ArtistCard extends StatelessWidget {
       margin: const EdgeInsets.only(left: 32),
       child: Column(
         children: [
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(32),
-          //   child: Image.network(
-          //     imageUrl,
-          //     height: 120,
-          //     width: 120,
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
           CachedNetworkImage(
             imageUrl: imageUrl,
             placeholder: (context, url) => Container(

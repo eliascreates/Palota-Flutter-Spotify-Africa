@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/service_locator.dart';
 
 import '../../domain/domain.dart';
 import '../bloc/bloc.dart';
 import '../widgets/widgets.dart';
 
-//TODO: complete this page - you may choose to change it to a stateful widget if necessary
 class SpotifyPlaylistPage extends StatelessWidget {
   final BriefPlaylistInfo briefPlaylistInfo;
 
@@ -39,13 +37,13 @@ class SpotifyPlaylistView extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         slivers: [
-          //In case no data for playlistInfo
           SliverList(
             delegate: SliverChildListDelegate(
               [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 48.0)
-                      .copyWith(bottom: 15),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 48.0,
+                  ).copyWith(bottom: 15),
                   child: PlaylistDetailImageCard(
                     playlistInfo: playlistInfo,
                   ),
@@ -60,11 +58,7 @@ class SpotifyPlaylistView extends StatelessWidget {
             ),
           ),
           const PlaylistTrackList(),
-
-          // const PlaylistFeaturedContent(),
-
-          // const Center(
-          //     child: CircularProgressIndicator(color: AppColors.cyan)),
+          const PlaylistFeaturedContent(),
         ],
       ),
     );
