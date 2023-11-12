@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_spotify_africa_assessment/colors.dart';
-import 'package:flutter_spotify_africa_assessment/routes.dart';
+import 'package:flutter_spotify_africa_assessment/config/routes/routes.dart';
 import 'package:flutter_spotify_africa_assessment/service_locator.dart';
 
 import '../../domain/domain.dart';

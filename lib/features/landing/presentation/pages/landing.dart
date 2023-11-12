@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/features/landing/presentation/animations/rive_assets.dart';
-import 'package:flutter_spotify_africa_assessment/routes.dart';
+import 'package:flutter_spotify_africa_assessment/config/routes/routes.dart';
 import 'package:rive/rive.dart';
 
 class LandingPage extends StatefulWidget {

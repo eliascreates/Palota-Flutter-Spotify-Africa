@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/spotify.dart';
-import 'package:flutter_spotify_africa_assessment/routes.dart';
+import 'package:flutter_spotify_africa_assessment/config/routes/routes.dart';
 import 'service_locator.dart' as di;
 import 'config/theme/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
