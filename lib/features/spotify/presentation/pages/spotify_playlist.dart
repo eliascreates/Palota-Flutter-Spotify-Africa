@@ -1,33 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_spotify_africa_assessment/service_locator.dart';
-
 import '../../domain/domain.dart';
 import '../bloc/bloc.dart';
 import '../widgets/widgets.dart';
 
-class SpotifyPlaylistPage extends StatelessWidget {
-  final BriefPlaylistInfo briefPlaylistInfo;
-
-  const SpotifyPlaylistPage({super.key, required this.briefPlaylistInfo});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SpotifyPlaylistCubit(
-        getArtistById: sl<GetArtistById>(),
-        getPlaylistById: sl<GetPlaylistById>(),
-      )..fetchPlaylistById(playlistId: briefPlaylistInfo.id),
-      child: SpotifyPlaylistView(playlistInfo: briefPlaylistInfo),
-    );
-  }
-}
-
-class SpotifyPlaylistView extends StatelessWidget {
-  const SpotifyPlaylistView({super.key, required this.playlistInfo});
+class SpotifyPlaylistPage extends StatefulWidget {
+  const SpotifyPlaylistPage({super.key, required this.playlistInfo});
 
   final BriefPlaylistInfo playlistInfo;
+
+  @override
+  State<SpotifyPlaylistPage> createState() => _SpotifyPlaylistPageState();
+}
+
+class _SpotifyPlaylistPageState extends State<SpotifyPlaylistPage> {
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<SpotifyPlaylistCubit>()
+        .fetchPlaylistById(playlistId: widget.playlistInfo.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +39,7 @@ class SpotifyPlaylistView extends StatelessWidget {
                     horizontal: 48.0,
                   ).copyWith(bottom: 15),
                   child: PlaylistDetailImageCard(
-                    playlistInfo: playlistInfo,
+                    playlistInfo: widget.playlistInfo,
                   ),
                 ),
                 const PlaylistDescription(),

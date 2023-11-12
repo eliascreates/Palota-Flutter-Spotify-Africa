@@ -37,14 +37,13 @@ class SpotifyPlaylistCubit extends Cubit<SpotifyPlaylistState> {
 
   Future<void> _getAllFeaturedArtists() async {
     final artistsIds = state.extractAllArtistIds;
-
     for (final artistId in artistsIds) {
       fetchArtistById(artistId: artistId);
     }
   }
 
   Future<void> fetchPlaylistById({required String playlistId}) async {
-    emit(state.copyWith(status: PlaylistStatus.loading, errorMessage: null));
+    emit(const SpotifyPlaylistState(status: PlaylistStatus.loading));
 
     final result = await getPlaylistById(playlistId: playlistId);
 

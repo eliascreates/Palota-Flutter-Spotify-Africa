@@ -40,7 +40,7 @@ class AppRoutes {
         final playlistInfo = settings.arguments as BriefPlaylistInfo;
         return MaterialPageRoute(
           builder: (BuildContext context) => SpotifyPlaylistPage(
-            briefPlaylistInfo: playlistInfo,
+            playlistInfo: playlistInfo,
           ),
           settings: settings,
         );

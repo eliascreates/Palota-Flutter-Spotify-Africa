@@ -57,7 +57,6 @@ class SpotifyCategoryView extends StatelessWidget {
       ),
       body: BlocBuilder<SpotifyBloc, SpotifyCategoryState>(
         builder: (context, state) {
-
           if (state.status == CategoryStatus.loading &&
               state.playlists.isEmpty) {
             return const Column(
@@ -68,7 +67,8 @@ class SpotifyCategoryView extends StatelessWidget {
             );
           }
 
-          if (state.status == CategoryStatus.failure && state.errorMessage != null) {
+          if (state.status == CategoryStatus.failure &&
+              state.errorMessage != null) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
