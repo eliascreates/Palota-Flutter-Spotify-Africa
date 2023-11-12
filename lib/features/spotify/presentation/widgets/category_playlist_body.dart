@@ -27,9 +27,7 @@ class _CategoryPlaylistBodyState extends State<CategoryPlaylistBody> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: _scrollController,
-
       scrollDirection: Axis.vertical,
-      physics: const BouncingScrollPhysics(),
       slivers: [
         SliverList(
           delegate: SliverChildListDelegate(
@@ -45,8 +43,7 @@ class _CategoryPlaylistBodyState extends State<CategoryPlaylistBody> {
             ],
           ),
         ),
-        CategoryPlaylistList(_scrollController,
-            categoryId: widget.categoryId),
+        CategoryPlaylistList(_scrollController, categoryId: widget.categoryId),
       ],
     );
   }
