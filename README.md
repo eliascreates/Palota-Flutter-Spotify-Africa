@@ -15,10 +15,10 @@ Palota assessment starter project | Palota Spotify Africa (Afro Category) Assess
 - Uses a Transition instead of a loading widget (when user clicks on a playlist). It Looks much smoother.
 - The code is much more Testable, Maintainable and Scalable. 
 
+https://github.com/eliascreates/Palota-Flutter-Spotify-Africa/assets/116556503/c0cfa6b5-4c98-4a62-b2c9-66c837e47b03
 
-<video width="500px" height="500px" controls="controls">
-  <source src="./palota_spotify.mp4" type="video/mp4"  />
- </video>
+
+
 
 ***
 
