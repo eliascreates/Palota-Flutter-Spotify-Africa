@@ -4,10 +4,21 @@ Palota assessment starter project | Palota Spotify Africa (Afro Category) Assess
 
 ![Palota Logo](https://palota.co.za/assets/images/meta/og-image.png)
 ***
-## Elias Kekana - Complete
+<!-- ## Elias Kekana - Complete
 
 ### What the app looks like on my android phone
-<img src="./zgif_palota_presents.gif" width="650px">
+<img src="./zgif_palota_presents.gif" width="650px"> -->
+### The Palota Spotify Africa App
+- Uses Clean architecture and SOLID principles
+- Proper error handling
+- Bloc State management
+- Uses a Transition instead of a loading widget (when user clicks on a playlist). It Looks much smoother.
+- The code is much more Testable, Maintainable and Scalable. 
+
+
+<video width="500px" height="500px" controls="controls">
+  <source src="./palota_spotify.mp4" type="video/mp4"  />
+ </video>
 
 ***
 
@@ -36,12 +47,12 @@ curl --location --request GET 'https://palota-jobs-africa-spotify-fa.azurewebsit
 
 The base URL for all calls is: https://palota-jobs-africa-spotify-fa.azurewebsites.net/api
 
-| Description | Method | Route | Comments |
-|:---:|:---:|:---:|---|
-| Get single category | `GET` | browse/categories/{categoryId} | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category](https://developer.spotify.com/documentation/web-api/reference/get-a-category)  *N.B.: The only supported category id is `afro`* |
-| List paginated playlist summaries | `GET` | browse/categories/{categoryId}/playlists | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-categories-playlists](https://developer.spotify.com/documentation/web-api/reference/get-a-categories-playlists)  *N.B.: The only query parameters supported are `offset` and `limit`. These help with pagination.  Hint: Not all results can be returned at once by API* |
-| Get single playlist | `GET` | playlists/{playlistId} | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist](https://developer.spotify.com/documentation/web-api/reference/get-playlist) |
-| Get single artist | `GET` | artists/{artistId} | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-artist](https://developer.spotify.com/documentation/web-api/reference/get-an-artist) |
+|            Description            | Method |                  Route                   | Comments                                                                                                                                                                                                                                                                                                                                                                      |
+| :-------------------------------: | :----: | :--------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|        Get single category        | `GET`  |      browse/categories/{categoryId}      | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-category](https://developer.spotify.com/documentation/web-api/reference/get-a-category)  *N.B.: The only supported category id is `afro`*                                                                                                                                |
+| List paginated playlist summaries | `GET`  | browse/categories/{categoryId}/playlists | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-categories-playlists](https://developer.spotify.com/documentation/web-api/reference/get-a-categories-playlists)  *N.B.: The only query parameters supported are `offset` and `limit`. These help with pagination.  Hint: Not all results can be returned at once by API* |
+|        Get single playlist        | `GET`  |          playlists/{playlistId}          | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist](https://developer.spotify.com/documentation/web-api/reference/get-playlist)                                                                                                                                                                                      |
+|         Get single artist         | `GET`  |            artists/{artistId}            | Spotify Documentation [https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-an-artist](https://developer.spotify.com/documentation/web-api/reference/get-an-artist)                                                                                                                                                                                    |
 
 
 ### Required Tasks
