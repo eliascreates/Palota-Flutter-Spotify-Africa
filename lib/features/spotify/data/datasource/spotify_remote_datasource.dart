@@ -1,7 +1,10 @@
 import 'dart:convert';
 
-import '../models/models.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:flutter_spotify_africa_assessment/config/endpoints.dart';
+
+import '../models/models.dart';
 
 abstract class SpotifyRemoteDataSource {
   Future<CategoryModel> getCategoryById({required String categoryId});
@@ -15,16 +18,6 @@ abstract class SpotifyRemoteDataSource {
 
   Future<ArtistModel> getArtistById({required String artistId});
 }
-
-const limit = 20;
-
-const apiKey = '_q6Qaip9V-PShHzF8q9l5yexp-z9IqwZB_o_6x882ts3AzFuo0DxuQ==';
-const baseUrl = 'https://palota-jobs-africa-spotify-fa.azurewebsites.net/api';
-
-const playlistUrl = '$baseUrl/playlists';
-const categoryUrl = '$baseUrl/browse/categories';
-const artistUrl = '$baseUrl/artists';
-const headers = {'x-functions-key': apiKey};
 
 class SpotifyRemoteDataSourceImpl implements SpotifyRemoteDataSource {
   final http.Client client;

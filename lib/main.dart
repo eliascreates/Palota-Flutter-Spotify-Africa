@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'service_locator.dart' as di;
-import 'theme.dart';
+import 'config/theme/theme.dart';
 
 Future<void> main() async {
   await di.init();
