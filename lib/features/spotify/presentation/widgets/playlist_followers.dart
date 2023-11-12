@@ -19,10 +19,11 @@ class PlaylistFollowers extends StatelessWidget {
         Container(
           width: 195,
           padding: const EdgeInsets.symmetric(vertical: 8).copyWith(right: 16),
-          decoration: const BoxDecoration(
-            color: Color(0xFF211F26),
-            borderRadius:
-                BorderRadiusDirectional.horizontal(start: Radius.circular(12)),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.onBackground,
+            borderRadius: const BorderRadiusDirectional.horizontal(
+              start: Radius.circular(12),
+            ),
           ),
           child: AnimatedOpacity(
             opacity: total == 0 ? 0 : 1,

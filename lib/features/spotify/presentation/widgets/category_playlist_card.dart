@@ -21,7 +21,7 @@ class CategoryPlaylistCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
-          color: const Color(0xFF211F26),
+          color: Theme.of(context).colorScheme.onBackground,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Column(

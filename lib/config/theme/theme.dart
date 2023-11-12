@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spotify_africa_assessment/colors.dart';
 
 const robotoFont = 'Roboto';
 
+const backgroundColor = Color(0xFF141218);
+const onBackgroundColor = Color(0xFF211F26);
+
 final palotaDarkTheme = ThemeData(
   fontFamily: robotoFont,
-  scaffoldBackgroundColor: const Color(0xFF141218),
-  colorScheme:
-      ColorScheme.fromSeed(brightness: Brightness.dark, seedColor: Colors.cyan),
+
+  colorScheme: ColorScheme.fromSeed(
+    background: backgroundColor,
+    onBackground: onBackgroundColor,
+    brightness: Brightness.dark,
+    seedColor: AppColors.cyan,
+  ),
   useMaterial3: true,
 );
 

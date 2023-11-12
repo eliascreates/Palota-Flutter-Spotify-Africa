@@ -15,9 +15,9 @@ class PlaylistFeaturedContent extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          const SizedBox(height: 16),
+          const SizedBox(height: 6),
           const FeaturedHeader(),
-          const SizedBox(height: 40),
+          const SizedBox(height: 30),
           const PlaylistFeaturedArtistList(),
         ],
       ),

@@ -16,9 +16,9 @@ class CategoryHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4),
       margin: const EdgeInsets.only(left: 24, top: 32),
-      decoration: const BoxDecoration(
-        color: Color(0xFF211F26),
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onBackground,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(12),
           bottomLeft: Radius.circular(12),
         ),

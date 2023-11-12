@@ -20,10 +20,12 @@ class FeaturedHeader extends StatelessWidget {
         children: [
           Container(
             width: 342,
-            padding:
-                const EdgeInsets.symmetric(vertical: 12).copyWith(left: 16),
+            padding: const EdgeInsets.symmetric(vertical: 12).copyWith(
+              left: 16,
+            ),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-                color: const Color(0xFF211F26),
+                color: Theme.of(context).colorScheme.onBackground,
                 borderRadius: const BorderRadiusDirectional.horizontal(
                   end: Radius.circular(12),
                 ),
