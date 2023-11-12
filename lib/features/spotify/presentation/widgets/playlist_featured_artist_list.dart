@@ -1,27 +1,14 @@
 part of 'playlist_featured_content.dart';
 
-class PlaylistFeaturedArtistList extends StatefulWidget {
+class PlaylistFeaturedArtistList extends StatelessWidget {
   const PlaylistFeaturedArtistList({super.key});
-
-  @override
-  State<PlaylistFeaturedArtistList> createState() =>
-      _PlaylistFeaturedArtistListState();
-}
-
-class _PlaylistFeaturedArtistListState
-    extends State<PlaylistFeaturedArtistList> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<SpotifyPlaylistCubit>().getAllFeaturedArtists();
-  }
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<SpotifyPlaylistCubit>().state;
     final isLoadingArtistStatus = state.status == PlaylistStatus.loadingArtists;
-    final isLoadingStatus = state.status == PlaylistStatus.loading;
-    final isNotLoading = !isLoadingArtistStatus && !isLoadingStatus;
+    final isLoadingPlaylistStatus = state.status == PlaylistStatus.loading;
+    final isNotLoading = !isLoadingArtistStatus && !isLoadingPlaylistStatus;
 
     final artists = context.select(
       (SpotifyPlaylistCubit cubit) => cubit.state.artists,

@@ -34,8 +34,8 @@ class SpotifyPlaylistCubit extends Cubit<SpotifyPlaylistState> {
       ),
     );
   }
-  
-  Future<void> getAllFeaturedArtists() async {
+
+  Future<void> _getAllFeaturedArtists() async {
     final artistsIds = state.extractAllArtistIds;
 
     for (final artistId in artistsIds) {
@@ -54,12 +54,15 @@ class SpotifyPlaylistCubit extends Cubit<SpotifyPlaylistState> {
           status: PlaylistStatus.failure,
           errorMessage: failureMessage,
         ),
-        (playlist) async => state.copyWith(
-          playlist: playlist,
-          status: PlaylistStatus.success,
-          errorMessage: null,
-        ),
+        (playlist) async {
+          return state.copyWith(
+            playlist: playlist,
+            status: PlaylistStatus.success,
+            errorMessage: null,
+          );
+        },
       ),
     );
+    _getAllFeaturedArtists();
   }
 }

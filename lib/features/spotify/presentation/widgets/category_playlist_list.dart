@@ -7,8 +7,25 @@ import '../../domain/domain.dart';
 import '../bloc/bloc.dart';
 import 'category_playlist_card.dart';
 
-class CategoryPlaylistList extends StatelessWidget {
-  const CategoryPlaylistList({super.key});
+class CategoryPlaylistList extends StatefulWidget {
+  const CategoryPlaylistList(
+    this.scrollController, {
+    super.key,
+    required this.categoryId,
+  });
+
+  final String categoryId;
+  final ScrollController scrollController;
+  @override
+  State<CategoryPlaylistList> createState() => _CategoryPlaylistListState();
+}
+
+class _CategoryPlaylistListState extends State<CategoryPlaylistList> {
+  @override
+  void initState() {
+    super.initState();
+    widget.scrollController.addListener(_fetchPlaylistsOnScroll);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +45,6 @@ class CategoryPlaylistList extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           final currentPlaylist = playlists[index];
-
           return CategoryPlaylistCard(
             playlistInfo: currentPlaylist,
             onTap: () {
@@ -38,6 +54,24 @@ class CategoryPlaylistList extends StatelessWidget {
         },
       ),
     );
+  }
+
+  bool get _isBottomOfList {
+    if (!widget.scrollController.hasClients) return false;
+    final maxScrollExtent = widget.scrollController.position.maxScrollExtent;
+    final currentScrollPosition = widget.scrollController.offset;
+
+    return currentScrollPosition >= maxScrollExtent;
+  }
+
+  void _fetchPlaylistsOnScroll() {
+    if (_isBottomOfList) {
+      context.read<SpotifyBloc>().add(
+            SpotifyCategoryPlaylistsFetched(
+              categoryId: widget.categoryId,
+            ),
+          );
+    }
   }
 
   void _navigateToSpotifyPlaylistPage(

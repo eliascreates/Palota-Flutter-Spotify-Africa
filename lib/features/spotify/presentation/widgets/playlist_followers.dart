@@ -26,7 +26,7 @@ class PlaylistFollowers extends StatelessWidget {
           ),
           child: AnimatedOpacity(
             opacity: total == 0 ? 0 : 1,
-            duration: const Duration(seconds: 1),
+            duration: const Duration(milliseconds: 500),
             child: Text(
               formatNumFollowers(total),
               textAlign: TextAlign.end,

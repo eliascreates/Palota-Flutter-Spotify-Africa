@@ -25,7 +25,7 @@ class SpotifyBloc extends Bloc<SpotifyCategoryEvent, SpotifyCategoryState> {
     on<SpotifyCategoryFetchedById>(_onSpotifyCategoryFetchedById);
     on<SpotifyCategoryPlaylistsFetched>(
       _onSpotifyCategoryPlaylistsFetched,
-      transformer: throttleDroppable(const Duration(milliseconds: 100)),
+      transformer: throttleDroppable(const Duration(seconds: 1)),
     );
   }
 

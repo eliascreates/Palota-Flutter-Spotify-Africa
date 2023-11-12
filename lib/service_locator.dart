@@ -32,5 +32,5 @@ Future<void> init() async {
   sl.registerLazySingleton(() => http.Client());
 
   //*Uncomment the line below to see useful logs about any bloc in the terminal.
-  Bloc.observer = PalotaSpotifyObserver();
+  // Bloc.observer = PalotaSpotifyObserver();
 }
