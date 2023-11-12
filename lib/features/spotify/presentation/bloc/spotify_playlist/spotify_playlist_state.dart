@@ -36,10 +36,10 @@ class SpotifyPlaylistState extends Equatable {
     );
   }
 
-  List<String> get extractAllArtistIds {
-    if (playlist.tracks.isEmpty) return [];
+  Set<String> get extractAllArtistIds {
+    if (playlist.tracks.isEmpty) return {};
 
-    List<String> ids = [];
+    Set<String> ids = {};
     for (final track in playlist.tracks) {
       ids.addAll(track.artistTrackInfo.map((a) => a.id));
     }
